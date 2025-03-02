@@ -1,0 +1,19 @@
+# Python related
+*.pyc
+*.pyo
+__pycache__/
+
+# Django related
+*.sqlite3
+db.sqlite3
+/media/
+*.log
+
+# Environment settings
+.env
+
+# Virtual environment
+/myenv/
+
+# VS Code related
+.vscode/
