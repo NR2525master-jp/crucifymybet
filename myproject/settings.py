@@ -9,9 +9,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # 環境変数から読み込む
 SECRET_KEY = os.getenv("SECRET_KEY", "your-default-secret-key")
-DEBUG = os.getenv("DEBUG", "False") == "True"
+DEBUG = os.environ.get("DJANGO_DEBUG") == "True"
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost").split(",")
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+#ALLOWED_HOSTS = ["localhost", "your-django-app.onrender.com"]  # Render のURLを追加
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -35,14 +36,21 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",")
+# CORS の設定
+CORS_ALLOW_ALL_ORIGINS = True  # すべてのオリジンを許可（開発用）
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:8000",  # フロントエンドのオリジンを指定
+#     "http://127.0.0.1:8000",
+# ]
 
+CORS_ALLOW_METHODS = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+CORS_ALLOW_HEADERS = ["*"]
 ROOT_URLCONF = 'myproject.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR / 'myapp' / 'templates'],  # アプリごとのテンプレートフォルダを指定
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -89,5 +97,6 @@ TIME_ZONE = 'Asia/Tokyo'
 USE_I18N = True
 USE_TZ = True
 
-STATIC_URL = 'static/'
+STATIC_URL = "static/"
+STATICFILES_DIRS = [BASE_DIR / "static"]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
