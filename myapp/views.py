@@ -96,17 +96,17 @@ def predict(request):
             optimizer.step()
 
         # 入力データをスケーリング
-        input_features = np.array([[oddsA, oddsB]])
+        input_features = pd.DataFrame([[oddsA, oddsB]], columns=["oddsA", "oddsB"])  # DataFrameに変換
         input_features_scaled = scaler.transform(input_features)
 
         # 予測処理
-        rf_prediction = float(rf_model.predict(input_features_scaled)[0])
-        xgb_prediction = float(xgb_model.predict(input_features_scaled)[0])
+        rf_prediction = round(float(rf_model.predict(input_features_scaled)[0]), 2)
+        xgb_prediction = round(float(xgb_model.predict(input_features_scaled)[0]), 2)
 
         torch_model.eval()
         input_tensor = torch.tensor(input_features_scaled, dtype=torch.float32).to(device)
         with torch.no_grad():
-            torch_prediction = float(torch_model(input_tensor).item())
+            torch_prediction = round(float(torch_model(input_tensor).item()), 2)
 
         # 個別の予測結果を返す
         return JsonResponse({
