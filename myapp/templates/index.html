@@ -110,7 +110,7 @@
             document.getElementById("result-container").classList.add("hidden");
 
             try {
-                const response = await fetch("https://crucifymybet.onrender.com/", {
+                const response = await fetch("https://crucifymybet.onrender.com/predict/", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ oddsA: parseFloat(oddsA), oddsB: parseFloat(oddsB) }),
