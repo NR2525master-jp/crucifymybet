@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'myapp',
     'corsheaders',
 ]
-
+if DEBUG:
+    INSTALLED_APPS += ['debug_toolbar']
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
