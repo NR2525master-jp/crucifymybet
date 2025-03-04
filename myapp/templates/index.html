@@ -4,8 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI予測</title>
+
     <!-- Tailwind CSS をCDNから読み込む -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 静的ファイル（ファビコン）の設定 -->
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    
+    <!-- スタイルの追加 -->
     <style>
         /* スピナーのスタイル */
         .spinner {
@@ -22,6 +28,10 @@
             100% { transform: rotate(360deg); }
         }
     </style>
+
+    <!-- CSSの追加（必要に応じて） -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    
 </head>
 <body class="bg-gray-100 text-gray-800 font-sans flex flex-col min-h-screen">
 

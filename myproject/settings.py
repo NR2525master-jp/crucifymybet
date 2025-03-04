@@ -144,6 +144,12 @@ TIME_ZONE = 'Asia/Tokyo'
 USE_I18N = True
 USE_TZ = True
 
-STATIC_URL = "static/"
-STATICFILES_DIRS = [BASE_DIR / "static"]
+# 静的ファイルのURLパス（URLはそのままで大丈夫）
+STATIC_URL = '/static/'
+
+# 静的ファイルを集める場所（ディレクトリ）
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# プロジェクト内で静的ファイルを検索するディレクトリ（ファビコンなど）
+STATICFILES_DIRS = [BASE_DIR / 'static']
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
