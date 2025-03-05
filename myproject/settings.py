@@ -48,29 +48,19 @@ MIDDLEWARE = [
 
 # 開発環境のみ debug_toolbar を有効化
 if DEBUG:
-    if "debug_toolbar" not in INSTALLED_APPS:
-        INSTALLED_APPS.append("debug_toolbar")
-    if "debug_toolbar.middleware.DebugToolbarMiddleware" not in MIDDLEWARE:
-        MIDDLEWARE.insert(0, "debug_toolbar.middleware.DebugToolbarMiddleware")
-else:
-    if "debug_toolbar" in INSTALLED_APPS:
-        INSTALLED_APPS.remove("debug_toolbar")
-    if "debug_toolbar.middleware.DebugToolbarMiddleware" in MIDDLEWARE:
-        MIDDLEWARE.remove("debug_toolbar.middleware.DebugToolbarMiddleware")
+    INSTALLED_APPS.append("debug_toolbar")
+    MIDDLEWARE.insert(0, "debug_toolbar.middleware.DebugToolbarMiddleware")
 
 # 本番環境の設定
-SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_HSTS_SECONDS = 31536000
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 CORS_ALLOW_CREDENTIALS = True
 
 # CORS の設定
 CORS_ALLOW_ALL_ORIGINS = os.getenv("CORS_ALLOW_ALL_ORIGINS", "False").lower() == "true"
-
 if not CORS_ALLOW_ALL_ORIGINS:
     CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",") if os.getenv("CORS_ALLOWED_ORIGINS") else []
 
@@ -140,6 +130,5 @@ USE_TZ = True
 # 静的ファイル
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [BASE_DIR / 'static']
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
