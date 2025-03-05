@@ -55,7 +55,7 @@
     <!-- ローディングスピナー -->
     <div id="loading" class="hidden text-center flex justify-center items-center h-full absolute top-0 left-0 right-0 bottom-0 bg-gray-200 bg-opacity-50">
         <div class="spinner mb-4"></div>
-        <p class="text-lg">予測中...お待ちください</p>
+        <p class="text-lg">AI解析中..お待ちください</p>
     </div>
 
     <div id="result-container" class="hidden text-center mt-6">
@@ -100,7 +100,7 @@
             body: JSON.stringify({ oddsA: parseFloat(oddsA), oddsB: parseFloat(oddsB) })
         }),
         new Promise((_, reject) =>
-            setTimeout(() => reject(new Error('Request timed out')), 10000) // 10秒でタイムアウト
+            setTimeout(() => reject(new Error('Request timed out')), 100000) // 100秒でタイムアウト
         )
     ]);
                 const data = await response.json();
