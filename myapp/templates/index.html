@@ -10,8 +10,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-
     <style>
         .spinner {
             border: 4px solid #f3f3f3;
@@ -25,18 +23,8 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        #loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.8);
-        }
     </style>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body class="bg-gray-100 text-gray-800 font-sans h-screen flex flex-col">
 
@@ -64,9 +52,10 @@
         </form>
     </main>
 
-    <div id="loading" class="hidden">
-        <div class="spinner"></div>
-        <p class="text-lg ml-4">AI解析中…未来を描きましょう</p>
+    <!-- ローディングスピナー -->
+    <div id="loading" class="hidden text-center flex justify-center items-center h-full absolute top-0 left-0 right-0 bottom-0 bg-gray-200 bg-opacity-50">
+        <div class="spinner mb-4"></div>
+        <p class="text-lg">予測中...お待ちください</p>
     </div>
 
     <div id="result-container" class="hidden text-center mt-6">
@@ -101,15 +90,19 @@
             document.getElementById("result-container").classList.add("hidden");
 
             try {
-                const response = await fetch("https://crucifymybet.onrender.com/predict/", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRFToken": csrfToken  // ✅ CSRFトークンを正しく送信
-                    },
-                    body: JSON.stringify({ oddsA: parseFloat(oddsA), oddsB: parseFloat(oddsB) })
-                });
-
+    const response = await Promise.race([
+        fetch("https://crucifymybet.onrender.com/predict/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrfToken
+            },
+            body: JSON.stringify({ oddsA: parseFloat(oddsA), oddsB: parseFloat(oddsB) })
+        }),
+        new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Request timed out')), 10000) // 10秒でタイムアウト
+        )
+    ]);
                 const data = await response.json();
 
                 document.getElementById("result").innerText =
@@ -120,9 +113,10 @@
                 document.getElementById("loading").classList.add("hidden");
                 document.getElementById("result-container").classList.remove("hidden");
             } catch (error) {
-                alert("予測の取得に失敗しました。再試行してください。");
-                document.getElementById("loading").classList.add("hidden");
-            }
+    console.error("予測エラー:", error);
+    alert("予測の取得に失敗しました。再試行してください。");
+    document.getElementById("loading").classList.add("hidden");
+}
         });
     </script>
 
